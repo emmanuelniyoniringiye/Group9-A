@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Ball Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #91a30d;
+            
+        }
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        #character {
+            width: 50px;
+            height: 50px;
+            background-color: rgb(0, 131, 129);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #ball {
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+   
+    <div id="gameContainer">
+        <div id="character"></div>
+        <div id="ball"></div>
+    </div>
+
+    <script>
+        let userinput= prompt("please enter your name before continueing");
+       
+        
+            
+           
+
+        const character = document.getElementById('character');
+        const ball = document.getElementById('ball');
+        let score = 0;
+
+        document.addEventListener('keydown', (event) => {
+            const characterLeft = parseInt(window.getComputedStyle(character).getPropertyValue('left'));
+            if (event.code === 'ArrowLeft') {
+                character.style.left = (characterLeft - 15) + 'px';
+            } else if (event.code === 'ArrowRight') {
+                character.style.left = (characterLeft + 15) + 'px';
+            }
+        });
+
+        function moveBall() {
+            const ballTop = parseInt(window.getComputedStyle(ball).getPropertyValue('top'));
+            if (ballTop > window.innerHeight) {
+                // Ball missed, reset position
+                ball.style.top = '0px';
+                ball.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+                score--;
+                document.getElementById('score').textContent = score;
+            } else {
+                ball.style.top = (ballTop + 5) + 'px';
+            }
+        }
+
+        function checkCollision() {
+            const characterRect = character.getBoundingClientRect();
+            const ballRect = ball.getBoundingClientRect();
+            if (
+                characterRect.right >= ballRect.left &&
+                characterRect.left <= ballRect.right &&
+                characterRect.bottom >= ballRect.top &&
+                characterRect.top <= ballRect.bottom
+            ) {
+                // Collision detected
+                ball.style.top = '0px';
+                ball.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+        }5
+
+        setInterval(moveBall, 50);
+        setInterval(checkCollision, 50);
+    
+    </script>
+   
+    <p style="position: absolute; top: 10px; right: 10px;">Score: <span id="score">0</span></p>
+</body>
+</html>
+
